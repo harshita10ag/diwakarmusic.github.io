@@ -87,7 +87,16 @@ body {
 
     <div class="cards">
       <div class="card">
-        <a href="spotify-redirect.html"><img src="images/c.jpeg" alt="Ankahe">
+        <a href="https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy" 
+       onclick="if(/Android/i.test(navigator.userAgent)) {
+                  var intentUrl = 'intent://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy#Intent;package=com.spotify.music;scheme=https;end;';
+                  window.location.href = intentUrl;
+                  setTimeout(function() {
+                      window.location.href = 'https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy';
+                  }, 2000);
+                  return false;
+               }">
+          <img src="images/c.jpeg" alt="Ankahe">
         <div class="song-title">Spotify</div>
       </a>
   </div>
