@@ -87,10 +87,12 @@ body {
 
     <div class="cards">
       <div class="card">
-        <a href="https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy" 
-       onclick="if(/Android/i.test(navigator.userAgent)) {
-                  var intentUrl = 'intent://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy#Intent;package=com.spotify.music;scheme=https;end;';
-                  window.location.href = intentUrl;
+       <a href="https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy" 
+       onclick="if(navigator.userAgent.match(/Instagram/i)) {
+                  window.location.href = 'https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy';
+                  return true;
+                } else if(/Android/i.test(navigator.userAgent)) {
+                  window.location.href = 'intent://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy#Intent;package=com.spotify.music;scheme=https;end;';
                   setTimeout(function() {
                       window.location.href = 'https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy';
                   }, 2000);
@@ -131,7 +133,85 @@ body {
             <img src="images/c.jpeg" alt="Ankahe">
             <div class="song-title">Apple Music</div>
           </a>
-        </div>
+        </div
+          <div class="card" id="spotify-card">
+    <a id="spotify-link" href="https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy">
+        <img src="images/c.jpeg" alt="Ankahe">
+        <div class="song-title">Spotify test</div>
+    </a>
+</div>
+
+<script>
+(function() {
+    var link = document.getElementById('spotify-link');
+    var userAgent = navigator.userAgent;
+    
+    // Check if in Instagram browser
+    if (userAgent.match(/Instagram/i)) {
+        // Keep the regular web link for Instagram
+        link.href = 'https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy';
+    }
+    // Check if in Android and not in Instagram
+    else if (userAgent.match(/Android/i)) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Try to open Spotify app
+            window.location.href = 'intent://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy#Intent;package=com.spotify.music;scheme=https;end;';
+            
+            // Fallback to web version after 2 seconds
+            setTimeout(function() {
+                window.location.href = 'https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy';
+            }, 2000);
+        });
+    }
+    // iOS devices
+    else if (userAgent.match(/iPhone|iPad|iPod/i)) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Try to open Spotify app on iOS
+            window.location.href = 'spotify://album/1MCoGB2bjYiRXVU8hkHlCy';
+            
+            // Fallback to web version
+            setTimeout(function() {
+                window.location.href = 'https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy';
+            }, 2000);
+        });
+    }
+})();
+</script>
+      <div class="card">
+    <a href="https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy" 
+       onclick="var ua = navigator.userAgent;
+                // Don't do anything fancy in Instagram
+                if(ua.match(/Instagram/i)) {
+                    return true;
+                }
+                // Android but not Instagram
+                else if(ua.match(/Android/i)) {
+                    event.preventDefault();
+                    window.location.href = 'intent://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy#Intent;package=com.spotify.music;scheme=https;end;';
+                    setTimeout(function() {
+                        window.location.href = 'https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy';
+                    }, 2500);
+                    return false;
+                }
+                // iOS but not Instagram
+                else if(ua.match(/iPhone|iPad|iPod/i)) {
+                    event.preventDefault();
+                    window.location.href = 'spotify://album/1MCoGB2bjYiRXVU8hkHlCy';
+                    setTimeout(function() {
+                        window.location.href = 'https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy';
+                    }, 2500);
+                    return false;
+                }
+                // Default - regular web link
+                return true;">
+        <img src="images/c.jpeg" alt="Ankahe">
+        <div class="song-title">Spotify test</div>
+    </a>
+</div>
 
     </div>
 
