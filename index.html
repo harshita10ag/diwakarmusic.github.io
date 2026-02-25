@@ -86,134 +86,116 @@ body {
     </div>
 
     <div class="cards">
-      <div class="card">
-       <a href="https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy" 
-       onclick="if(navigator.userAgent.match(/Instagram/i)) {
-                  window.location.href = 'https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy';
-                  return true;
-                } else if(/Android/i.test(navigator.userAgent)) {
-                  window.location.href = 'intent://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy#Intent;package=com.spotify.music;scheme=https;end;';
-                  setTimeout(function() {
-                      window.location.href = 'https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy';
-                  }, 2000);
-                  return false;
-               }">
-          <img src="images/c.jpeg" alt="Ankahe">
-        <div class="song-title">Spotify</div>
-      </a>
-  </div>
-
-        <div class="card">
-          <a href="https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy">
+    <!-- Spotify -->
+    <div class="card" data-platform="spotify" data-id="1MCoGB2bjYiRXVU8hkHlCy" data-type="album">
+        <a href="#" onclick="openMusicApp(event, this.parentElement); return false;">
             <img src="images/c.jpeg" alt="Ankahe">
             <div class="song-title">Spotify</div>
-          </a>
-        </div>
-
-        <div class="card">
-          <a href="https://music.youtube.com/playlist?list=OLAK5uy_kGLlBMgQbbd9UxtlRgy-ejMjSDc8cUN8k&si=o6lbhEcelPKFgnWI">
+        </a>
+    </div>
+    
+    <!-- YouTube Music -->
+    <div class="card" data-platform="youtube" data-id="OLAK5uy_kGLlBMgQbbd9UxtlRgy-ejMjSDc8cUN8k" data-type="playlist">
+        <a href="#" onclick="openMusicApp(event, this.parentElement); return false;">
             <img src="images/c.jpeg" alt="Ankahe">
             <div class="song-title">YT Music</div>
-          </a>
-        </div>
-      <div class="card">
-          <a href="https://gaana.com/song/album-song-2206-7147">
+        </a>
+    </div>
+    
+    <!-- Gaana -->
+    <div class="card" data-platform="gaana" data-url="https://gaana.com/song/album-song-2206-7147">
+        <a href="#" onclick="openMusicApp(event, this.parentElement); return false;">
             <img src="images/c.jpeg" alt="Ankahe">
             <div class="song-title">Gaana</div>
-          </a>
-        </div>
-      <div class="card">
-          <a href="https://www.jiosaavn.com/p/album/hindi/%e0%a4%85%e0%a4%a8%e0%a4%95%e0%a4%b9%e0%a4%be-2026/4T5qgPL1gH0_">
+        </a>
+    </div>
+    
+    <!-- Jio Saavan -->
+    <div class="card" data-platform="jiosaavn" data-url="https://www.jiosaavn.com/p/album/hindi/%e0%a4%85%e0%a4%a8%e0%a4%95%e0%a4%b9%e0%a4%be-2026/4T5qgPL1gH0_">
+        <a href="#" onclick="openMusicApp(event, this.parentElement); return false;">
             <img src="images/c.jpeg" alt="Ankahe">
             <div class="song-title">Jio Saavan</div>
-          </a>
-        </div>
-       <div class="card">
-          <a href="http://itunes.apple.com/album/id1873504958?ls=1&app=itunes">
+        </a>
+    </div>
+    
+    <!-- Apple Music -->
+    <div class="card" data-platform="apple" data-id="1873504958">
+        <a href="#" onclick="openMusicApp(event, this.parentElement); return false;">
             <img src="images/c.jpeg" alt="Ankahe">
             <div class="song-title">Apple Music</div>
-          </a>
-       </div>
-          <div class="card" id="spotify-card">
-    <a id="spotify-link" href="https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy">
-        <img src="images/c.jpeg" alt="Ankahe">
-        <div class="song-title">Spotify test</div>
-    </a>
+        </a>
+    </div>
 </div>
 
 <script>
-(function() {
-    var link = document.getElementById('spotify-link');
-    var userAgent = navigator.userAgent;
+function openMusicApp(event, cardElement) {
+    event.preventDefault();
     
-    // Check if in Instagram browser
-    if (userAgent.match(/Instagram/i)) {
-        // Keep the regular web link for Instagram
-        link.href = 'https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy';
+    var platform = cardElement.dataset.platform;
+    var userAgent = navigator.userAgent;
+    var isAndroid = /Android/i.test(userAgent);
+    var isIOS = /iPhone|iPad|iPod/i.test(userAgent);
+    
+    var appUrl = '';
+    var webUrl = '';
+    
+    // Set URLs based on platform
+    switch(platform) {
+        case 'spotify':
+            var albumId = cardElement.dataset.id;
+            appUrl = isAndroid ? 
+                'intent://open.spotify.com/album/' + albumId + '#Intent;package=com.spotify.music;scheme=https;end;' :
+                'spotify://album/' + albumId;
+            webUrl = 'https://open.spotify.com/album/' + albumId;
+            break;
+            
+        case 'youtube':
+            var playlistId = cardElement.dataset.id;
+            appUrl = isAndroid ?
+                'intent://music.youtube.com/playlist?list=' + playlistId + '#Intent;package=com.google.android.apps.youtube.music;scheme=https;end;' :
+                'youtubemusic://playlist?list=' + playlistId;
+            webUrl = 'https://music.youtube.com/playlist?list=' + playlistId;
+            break;
+            
+        case 'apple':
+            var songId = cardElement.dataset.id;
+            appUrl = isIOS ?
+                'music://itunes.apple.com/album/id' + songId :
+                'https://music.apple.com/album/id' + songId;
+            webUrl = 'https://music.apple.com/album/id' + songId;
+            break;
+            
+        case 'gaana':
+        case 'jiosaavn':
+            webUrl = cardElement.dataset.url;
+            appUrl = webUrl; // These platforms might not have deep links
+            break;
     }
-    // Check if in Android and not in Instagram
-    else if (userAgent.match(/Android/i)) {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Try to open Spotify app
-            window.location.href = 'intent://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy#Intent;package=com.spotify.music;scheme=https;end;';
-            
-            // Fallback to web version after 2 seconds
-            setTimeout(function() {
-                window.location.href = 'https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy';
-            }, 2000);
-        });
+    
+    // Try to open app
+    if (isAndroid && appUrl.startsWith('intent://')) {
+        // For Android intents
+        var iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        iframe.src = appUrl;
+        document.body.appendChild(iframe);
+        
+        // Fallback to web
+        setTimeout(function() {
+            window.location.href = webUrl;
+        }, 1500);
+    } else {
+        // For iOS or web URLs
+        window.location.href = appUrl;
+        
+        // Fallback to web
+        setTimeout(function() {
+            window.location.href = webUrl;
+        }, 2000);
     }
-    // iOS devices
-    else if (userAgent.match(/iPhone|iPad|iPod/i)) {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Try to open Spotify app on iOS
-            window.location.href = 'spotify://album/1MCoGB2bjYiRXVU8hkHlCy';
-            
-            // Fallback to web version
-            setTimeout(function() {
-                window.location.href = 'https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy';
-            }, 2000);
-        });
-    }
-})();
+}
 </script>
-      <div class="card">
-    <a href="https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy" 
-       onclick="var ua = navigator.userAgent;
-                // Don't do anything fancy in Instagram
-                if(ua.match(/Instagram/i)) {
-                    return true;
-                }
-                // Android but not Instagram
-                else if(ua.match(/Android/i)) {
-                    event.preventDefault();
-                    window.location.href = 'intent://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy#Intent;package=com.spotify.music;scheme=https;end;';
-                    setTimeout(function() {
-                        window.location.href = 'https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy';
-                    }, 2500);
-                    return false;
-                }
-                // iOS but not Instagram
-                else if(ua.match(/iPhone|iPad|iPod/i)) {
-                    event.preventDefault();
-                    window.location.href = 'spotify://album/1MCoGB2bjYiRXVU8hkHlCy';
-                    setTimeout(function() {
-                        window.location.href = 'https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy';
-                    }, 2500);
-                    return false;
-                }
-                // Default - regular web link
-                return true;">
-        <img src="images/c.jpeg" alt="Ankahe">
-        <div class="song-title">Spotify test</div>
-    </a>
-</div>
 
-    </div>
 
     <div class="footer">
         New songs coming soon! 🎶
