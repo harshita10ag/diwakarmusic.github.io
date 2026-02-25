@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Opening Spotify...</title>
+
+<script>
+var appLink = "spotify:album:1MCoGB2bjYiRXVU8hkHlCy";
+var webLink = "https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy";
+
+// Try opening app
+window.location.href = appLink;
+
+// If app not installed → go to web after delay
+setTimeout(function() {
+  window.location.href = webLink;
+}, 1500);
+</script>
+
+</head>
+<body style="background:#0b0b0b; color:white; text-align:center; padding-top:100px;">
+Opening Spotify...
+<br><br>
+If nothing happens,
+<a href="https://open.spotify.com/album/1MCoGB2bjYiRXVU8hkHlCy" style="color:#1DB954;">
+Tap here
+</a>
+</body>
+</html>
